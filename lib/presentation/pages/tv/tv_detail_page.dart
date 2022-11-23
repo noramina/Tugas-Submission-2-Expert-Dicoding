@@ -80,10 +80,10 @@ class _TvDetailPageState extends State<TvDetailPage> {
 }
 
 class DetailTvContent extends StatelessWidget {
-  final TvDetail tvDetail;
+  final TvDetail tv;
   final List<Tv> recommendations;
   final bool isAddedWatchlist;
-  DetailTvContent(this.tvDetail, this.recommendations, this.isAddedWatchlist);
+  DetailTvContent(this.tv, this.recommendations, this.isAddedWatchlist);
 
 
   @override
@@ -92,7 +92,7 @@ class DetailTvContent extends StatelessWidget {
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl: 'https://image.tmdb.org/t/p/w500${tvDetail.posterPath}',
+          imageUrl: 'https://image.tmdb.org/t/p/w500${tv.posterPath}',
           width: screenWidth,
           placeholder: (context, url) => Center(
             child: CircularProgressIndicator(),
@@ -123,19 +123,19 @@ class DetailTvContent extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              tvDetail.name,
+                              tv.name,
                               style: kHeading5,
                             ),
-                            Text(_showGenres(tvDetail.genres)),
+                            Text(_showGenres(tv.genres)),
                             ElevatedButton(
                               onPressed: () async {
                                 if (!isAddedWatchlist) {
                                   context
                                       .read<WatchlistTvBloc>()
-                                      .add(SaveWatchistTv(tvDetail));
+                                      .add(SaveWatchistTv(tv));
                                 } else {
                                   context.read<WatchlistTvBloc>().add(
-                                      RemoveWatchlistTvEvent(tvDetail));
+                                      RemoveWatchlistTvEvent(tv));
                                 }
 
                                 String message = '';
@@ -171,7 +171,7 @@ class DetailTvContent extends StatelessWidget {
                                     BlocProvider.of<WatchlistTvBloc>(
                                             context)
                                         .add(WatchlistTvStatus(
-                                            tvDetail.id));
+                                            tv.id));
                                   }
                                 }
                               },
@@ -188,7 +188,7 @@ class DetailTvContent extends StatelessWidget {
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: tvDetail.voteAverage / 2,
+                                  rating: tv.voteAverage / 2,
                                   itemCount: 5,
                                   itemBuilder: (context, index) => Icon(
                                     Icons.star,
@@ -196,7 +196,7 @@ class DetailTvContent extends StatelessWidget {
                                   ),
                                   itemSize: 24,
                                 ),
-                                Text('${tvDetail.voteAverage}')
+                                Text('${tv.voteAverage}')
                               ],
                             ),
                             SizedBox(height: 16),
@@ -205,7 +205,7 @@ class DetailTvContent extends StatelessWidget {
                               style: kHeading6,
                             ),
                              Text(
-                              tvDetail.overview,
+                              tv.overview,
                             ),
                             const SizedBox(height: 16),
                             Text(
@@ -216,9 +216,9 @@ class DetailTvContent extends StatelessWidget {
                               height: 150,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: tvDetail.seasons.length,
+                                itemCount: tv.seasons.length,
                                 itemBuilder: (context, index) {
-                                  if (tvDetail.seasons[index].posterPath != null) {
+                                  if (tv.seasons[index].posterPath != null) {
                                     return Row(
                                       children: [
                                         Padding(
@@ -230,7 +230,7 @@ class DetailTvContent extends StatelessWidget {
                                             ),
                                             child: CachedNetworkImage(
                                               imageUrl:
-                                                  'https://image.tmdb.org/t/p/w500${tvDetail.seasons[index].posterPath}',
+                                                  'https://image.tmdb.org/t/p/w500${tv.seasons[index].posterPath}',
                                               placeholder: (context, url) =>
                                                   const Center(
                                                 child:
@@ -247,7 +247,7 @@ class DetailTvContent extends StatelessWidget {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                                '${tvDetail.seasons[index].name}:\n${tvDetail.seasons[index].episodeCount.toString()} episodes'),
+                                                '${tv.seasons[index].name}:\n${tv.seasons[index].episodeCount.toString()} episodes'),
                                           ],
                                         ),
                                       ],
@@ -261,7 +261,7 @@ class DetailTvContent extends StatelessWidget {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                                '${tvDetail.seasons[index].name}:\n${tvDetail.seasons[index].episodeCount.toString()} episodes'),
+                                                '${tv.seasons[index].name}:\n${tv.seasons[index].episodeCount.toString()} episodes'),
                                           ],
                                         ),
                                       ],
@@ -271,7 +271,7 @@ class DetailTvContent extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              tvDetail.overview,
+                              tv.overview,
                             ),
                             SizedBox(height: 16),
                             Text(
@@ -300,7 +300,7 @@ class DetailTvContent extends StatelessWidget {
                                               ),
                                               child: CachedNetworkImage(
                                                 imageUrl:
-                                                    'https://image.tmdb.org/t/p/w500${tvDetail.posterPath}',
+                                                    'https://image.tmdb.org/t/p/w500${tv.posterPath}',
                                                 placeholder: (context, url) =>
                                                     Center(
                                                   child:
